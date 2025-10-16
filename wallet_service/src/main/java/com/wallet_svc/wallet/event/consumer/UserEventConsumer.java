@@ -1,14 +1,13 @@
-package com.wallet_svc.event;
+package com.wallet_svc.wallet.event.consumer;
 
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
-
+import com.wallet_svc.wallet.event.payload.UserRegisteredEvent;
 import com.wallet_svc.wallet.service.WalletService;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor

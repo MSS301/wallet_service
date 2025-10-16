@@ -1,14 +1,14 @@
-package com.wallet_svc.event;
+package com.wallet_svc.wallet.event.producer;
 
-import java.time.LocalDateTime;
-
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
-
+import com.wallet_svc.wallet.event.payload.WalletCreatedEvent;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
