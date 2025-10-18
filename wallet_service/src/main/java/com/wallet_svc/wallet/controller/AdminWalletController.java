@@ -24,34 +24,34 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class AdminWalletController {
-	WalletService walletService;
-	TransactionService transactionService;
+    WalletService walletService;
+    TransactionService transactionService;
 
-	@GetMapping("/{userId}")
-	ApiResponse<WalletResponse> getWalletByUserId(@PathVariable("userId") Integer userId) {
-		log.info("Admin get wallet for user: {}", userId);
-		return ApiResponse.<WalletResponse>builder()
-				.result(walletService.getWalletByUserId(userId))
-				.build();
-	}
+    @GetMapping("/{userId}")
+    ApiResponse<WalletResponse> getWalletByUserId(@PathVariable("userId") String userId) {
+        log.info("Admin get wallet for user: {}", userId);
+        return ApiResponse.<WalletResponse>builder()
+                .result(walletService.getWalletByUserId(userId))
+                .build();
+    }
 
-	@PostMapping("/{userId}/adjustment")
-	@ResponseStatus(HttpStatus.CREATED)
-	ApiResponse<TransactionResponse> createAdjustment(
-			@PathVariable("userId") Integer userId, @RequestBody @Valid AdjustmentRequest request) {
-		log.info("Admin adjustment for user: {}, amount: {}", userId, request.getAmount());
-		request.setUserId(userId);
-		return ApiResponse.<TransactionResponse>builder()
-				.result(walletService.adjustment(request))
-				.build();
-	}
+    @PostMapping("/{userId}/adjustment")
+    @ResponseStatus(HttpStatus.CREATED)
+    ApiResponse<TransactionResponse> createAdjustment(
+            @PathVariable("userId") String userId, @RequestBody @Valid AdjustmentRequest request) {
+        log.info("Admin adjustment for user: {}, amount: {}", userId, request.getAmount());
+        request.setUserId(userId);
+        return ApiResponse.<TransactionResponse>builder()
+                .result(walletService.adjustment(request))
+                .build();
+    }
 
-	@GetMapping("/transactions")
-	ApiResponse<Page<TransactionResponse>> getAllTransactions(
-			@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int limit) {
-		Pageable pageable = PageRequest.of(page - 1, limit);
-		return ApiResponse.<Page<TransactionResponse>>builder()
-				.result(transactionService.getAllTransactions(pageable))
-				.build();
-	}
+    @GetMapping("/transactions")
+    ApiResponse<Page<TransactionResponse>> getAllTransactions(
+            @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int limit) {
+        Pageable pageable = PageRequest.of(page - 1, limit);
+        return ApiResponse.<Page<TransactionResponse>>builder()
+                .result(transactionService.getAllTransactions(pageable))
+                .build();
+    }
 }
