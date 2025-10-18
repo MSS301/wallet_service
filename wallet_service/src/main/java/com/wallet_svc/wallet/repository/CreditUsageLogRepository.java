@@ -12,10 +12,9 @@ import com.wallet_svc.wallet.entity.CreditUsageLog;
 
 @Repository
 public interface CreditUsageLogRepository extends JpaRepository<CreditUsageLog, Long> {
-	Page<CreditUsageLog> findByUserIdOrderByCreatedAtDesc(Integer userId, Pageable pageable);
+    Page<CreditUsageLog> findByUserIdOrderByCreatedAtDesc(Integer userId, Pageable pageable);
 
-	List<CreditUsageLog> findByUserIdAndCreatedAtBetween(
-			Integer userId, LocalDateTime from, LocalDateTime to);
+    List<CreditUsageLog> findByUserIdAndCreatedAtBetween(Integer userId, LocalDateTime from, LocalDateTime to);
 
-	Page<CreditUsageLog> findByServiceTypeOrderByCreatedAtDesc(String serviceType, Pageable pageable);
+    Page<CreditUsageLog> findByServiceTypeOrderByCreatedAtDesc(String serviceType, Pageable pageable);
 }
