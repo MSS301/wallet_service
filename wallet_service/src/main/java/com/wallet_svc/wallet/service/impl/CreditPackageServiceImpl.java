@@ -23,19 +23,19 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class CreditPackageServiceImpl implements CreditPackageService {
-	CreditPackageRepository packageRepository;
-	WalletMapper walletMapper;
+    CreditPackageRepository packageRepository;
+    WalletMapper walletMapper;
 
-	@Override
-	public List<CreditPackageResponse> getAllActivePackages() {
-		List<CreditPackage> packages = packageRepository.findByIsActiveTrueOrderByDisplayOrder();
-		return packages.stream().map(walletMapper::toCreditPackageResponse).collect(Collectors.toList());
-	}
+    @Override
+    public List<CreditPackageResponse> getAllActivePackages() {
+        List<CreditPackage> packages = packageRepository.findByIsActiveTrueOrderByDisplayOrder();
+        return packages.stream().map(walletMapper::toCreditPackageResponse).collect(Collectors.toList());
+    }
 
-	@Override
-	public CreditPackageResponse getPackageById(Long packageId) {
-		CreditPackage creditPackage =
-				packageRepository.findById(packageId).orElseThrow(() -> new AppException(ErrorCode.PACKAGE_NOT_FOUND));
-		return walletMapper.toCreditPackageResponse(creditPackage);
-	}
+    @Override
+    public CreditPackageResponse getPackageById(Long packageId) {
+        CreditPackage creditPackage =
+                packageRepository.findById(packageId).orElseThrow(() -> new AppException(ErrorCode.PACKAGE_NOT_FOUND));
+        return walletMapper.toCreditPackageResponse(creditPackage);
+    }
 }
