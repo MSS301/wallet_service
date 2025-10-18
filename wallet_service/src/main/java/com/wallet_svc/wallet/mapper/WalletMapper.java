@@ -7,11 +7,11 @@ import com.wallet_svc.wallet.entity.*;
 
 @Mapper(componentModel = "spring")
 public interface WalletMapper {
-	WalletResponse toWalletResponse(Wallet wallet);
+    WalletResponse toWalletResponse(Wallet wallet);
 
-	TransactionResponse toTransactionResponse(WalletTransaction transaction);
+    TransactionResponse toTransactionResponse(WalletTransaction transaction);
 
-	CreditPackageResponse toCreditPackageResponse(CreditPackage creditPackage);
+    CreditPackageResponse toCreditPackageResponse(CreditPackage creditPackage);
 
-	UsageLogResponse toUsageLogResponse(CreditUsageLog usageLog);
+    UsageLogResponse toUsageLogResponse(CreditUsageLog usageLog);
 }
