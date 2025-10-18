@@ -17,43 +17,43 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table(name = "wallet_holds")
 public class WalletHold {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-	@Column(name = "wallet_id", nullable = false)
-	Long walletId;
+    @Column(name = "wallet_id", nullable = false)
+    Long walletId;
 
-	@Column(precision = 15, scale = 2, nullable = false)
-	BigDecimal amount;
+    @Column(precision = 15, scale = 2, nullable = false)
+    BigDecimal amount;
 
-	@Column(length = 100)
-	String reason; // "AI_GENERATION_PENDING"
+    @Column(length = 100)
+    String reason; // "AI_GENERATION_PENDING"
 
-	@Column(name = "reference_type", length = 50)
-	String referenceType;
+    @Column(name = "reference_type", length = 50)
+    String referenceType;
 
-	@Column(name = "reference_id", length = 100)
-	String referenceId;
+    @Column(name = "reference_id", length = 100)
+    String referenceId;
 
-	@Column(length = 50)
-	@Builder.Default
-	String status = "ACTIVE"; // ACTIVE / RELEASED / EXPIRED
+    @Column(length = 50)
+    @Builder.Default
+    String status = "ACTIVE"; // ACTIVE / RELEASED / EXPIRED
 
-	@Column(name = "expires_at")
-	LocalDateTime expiresAt;
+    @Column(name = "expires_at")
+    LocalDateTime expiresAt;
 
-	@Column(name = "released_at")
-	LocalDateTime releasedAt;
+    @Column(name = "released_at")
+    LocalDateTime releasedAt;
 
-	@Column(name = "created_at", updatable = false)
-	@Builder.Default
-	LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at", updatable = false)
+    @Builder.Default
+    LocalDateTime createdAt = LocalDateTime.now();
 
-	@PrePersist
-	public void prePersist() {
-		if (this.createdAt == null) {
-			this.createdAt = LocalDateTime.now();
-		}
-	}
+    @PrePersist
+    public void prePersist() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+    }
 }
