@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import com.wallet_svc.wallet.dto.response.TransactionResponse;
 
 public interface TransactionService {
-	Page<TransactionResponse> getMyTransactions(Integer userId, Pageable pageable);
+    Page<TransactionResponse> getMyTransactions(String userId, Pageable pageable);
 
-	TransactionResponse getTransactionById(Long transactionId);
+    TransactionResponse getTransactionById(Long transactionId);
 
-	Page<TransactionResponse> getAllTransactions(Pageable pageable);
+    Page<TransactionResponse> getAllTransactions(Pageable pageable);
 }
