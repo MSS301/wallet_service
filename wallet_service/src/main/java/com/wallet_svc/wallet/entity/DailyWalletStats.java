@@ -21,52 +21,52 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table(name = "daily_wallet_stats")
 public class DailyWalletStats {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-	@Column(nullable = false, unique = true)
-	LocalDate date;
+    @Column(nullable = false, unique = true)
+    LocalDate date;
 
-	@Column(name = "total_wallets")
-	@Builder.Default
-	Integer totalWallets = 0;
+    @Column(name = "total_wallets")
+    @Builder.Default
+    Integer totalWallets = 0;
 
-	@Column(name = "active_wallets")
-	@Builder.Default
-	Integer activeWallets = 0;
+    @Column(name = "active_wallets")
+    @Builder.Default
+    Integer activeWallets = 0;
 
-	@Column(name = "total_balance", precision = 15, scale = 2)
-	@Builder.Default
-	BigDecimal totalBalance = BigDecimal.ZERO;
+    @Column(name = "total_balance", precision = 15, scale = 2)
+    @Builder.Default
+    BigDecimal totalBalance = BigDecimal.ZERO;
 
-	@Column(name = "total_spent", precision = 15, scale = 2)
-	@Builder.Default
-	BigDecimal totalSpent = BigDecimal.ZERO;
+    @Column(name = "total_spent", precision = 15, scale = 2)
+    @Builder.Default
+    BigDecimal totalSpent = BigDecimal.ZERO;
 
-	@Column(name = "total_earned", precision = 15, scale = 2)
-	@Builder.Default
-	BigDecimal totalEarned = BigDecimal.ZERO;
+    @Column(name = "total_earned", precision = 15, scale = 2)
+    @Builder.Default
+    BigDecimal totalEarned = BigDecimal.ZERO;
 
-	@Column(name = "total_transactions")
-	@Builder.Default
-	Integer totalTransactions = 0;
+    @Column(name = "total_transactions")
+    @Builder.Default
+    Integer totalTransactions = 0;
 
-	@Column(name = "avg_transaction_value", precision = 15, scale = 2)
-	BigDecimal avgTransactionValue;
+    @Column(name = "avg_transaction_value", precision = 15, scale = 2)
+    BigDecimal avgTransactionValue;
 
-	@JdbcTypeCode(SqlTypes.JSON)
-	@Column(columnDefinition = "jsonb")
-	String metadata;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    String metadata;
 
-	@Column(name = "created_at", updatable = false)
-	@Builder.Default
-	LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at", updatable = false)
+    @Builder.Default
+    LocalDateTime createdAt = LocalDateTime.now();
 
-	@PrePersist
-	public void prePersist() {
-		if (this.createdAt == null) {
-			this.createdAt = LocalDateTime.now();
-		}
-	}
+    @PrePersist
+    public void prePersist() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+    }
 }
