@@ -16,17 +16,17 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AdjustmentRequest {
-	@NotNull(message = "User ID is required")
-	@JsonProperty("user_id")
-	Integer userId;
+    @NotNull(message = "User ID is required")
+    @JsonProperty("user_id")
+    String userId;
 
-	@NotNull(message = "Amount is required")
-	BigDecimal amount; // Can be positive or negative
+    @NotNull(message = "Amount is required")
+    BigDecimal amount; // Can be positive or negative
 
-	String description;
+    String description;
 
-	@JsonProperty("processed_by")
-	Integer processedBy; // Admin user ID
+    @JsonProperty("processed_by")
+    Integer processedBy; // Admin user ID
 
-	String metadata;
+    String metadata;
 }

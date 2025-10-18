@@ -14,17 +14,17 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BalanceResponse {
-	@JsonProperty("user_id")
-	Integer userId;
+    @JsonProperty("user_id")
+    String userId;
 
-	BigDecimal balance;
+    BigDecimal balance;
 
-	@JsonProperty("locked_balance")
-	BigDecimal lockedBalance;
+    @JsonProperty("locked_balance")
+    BigDecimal lockedBalance;
 
-	@JsonProperty("available_balance")
-	BigDecimal availableBalance;
+    @JsonProperty("available_balance")
+    BigDecimal availableBalance;
 
-	String currency;
-	String status;
+    String currency;
+    String status;
 }

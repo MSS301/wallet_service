@@ -14,35 +14,35 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreditPackageResponse {
-	Long id;
-	String code;
-	String name;
+    Long id;
+    String code;
+    String name;
 
-	@JsonProperty("name_en")
-	String nameEn;
+    @JsonProperty("name_en")
+    String nameEn;
 
-	String description;
+    String description;
 
-	@JsonProperty("credits_amount")
-	Integer creditsAmount;
+    @JsonProperty("credits_amount")
+    Integer creditsAmount;
 
-	@JsonProperty("bonus_credits")
-	Integer bonusCredits;
+    @JsonProperty("bonus_credits")
+    Integer bonusCredits;
 
-	@JsonProperty("is_popular")
-	Boolean isPopular;
+    @JsonProperty("is_popular")
+    Boolean isPopular;
 
-	@JsonProperty("is_active")
-	Boolean isActive;
+    @JsonProperty("is_active")
+    Boolean isActive;
 
-	@JsonProperty("display_order")
-	Integer displayOrder;
+    @JsonProperty("display_order")
+    Integer displayOrder;
 
-	@JsonProperty("valid_from")
-	LocalDate validFrom;
+    @JsonProperty("valid_from")
+    LocalDate validFrom;
 
-	@JsonProperty("valid_to")
-	LocalDate validTo;
+    @JsonProperty("valid_to")
+    LocalDate validTo;
 
-	String metadata;
+    String metadata;
 }

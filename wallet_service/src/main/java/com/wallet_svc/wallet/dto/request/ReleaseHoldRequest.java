@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ReleaseHoldRequest {
-	@NotNull(message = "Hold ID is required")
-	@JsonProperty("hold_id")
-	Long holdId;
+    @NotNull(message = "Hold ID is required")
+    @JsonProperty("hold_id")
+    Long holdId;
 }

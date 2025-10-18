@@ -17,21 +17,21 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TopUpRequest {
-	@NotNull(message = "User ID is required")
-	@JsonProperty("user_id")
-	Integer userId;
+    @NotNull(message = "User ID is required")
+    @JsonProperty("user_id")
+    String userId;
 
-	@NotNull(message = "Amount is required")
-	@Positive(message = "Amount must be positive")
-	BigDecimal amount;
+    @NotNull(message = "Amount is required")
+    @Positive(message = "Amount must be positive")
+    BigDecimal amount;
 
-	String description;
+    String description;
 
-	@JsonProperty("reference_type")
-	String referenceType;
+    @JsonProperty("reference_type")
+    String referenceType;
 
-	@JsonProperty("reference_id")
-	String referenceId; // payment_id
+    @JsonProperty("reference_id")
+    String referenceId; // payment_id
 
-	String metadata;
+    String metadata;
 }

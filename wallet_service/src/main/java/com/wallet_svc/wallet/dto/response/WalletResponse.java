@@ -15,31 +15,31 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WalletResponse {
-	Long id;
+    Long id;
 
-	@JsonProperty("user_id")
-	Integer userId;
+    @JsonProperty("user_id")
+    String userId;
 
-	BigDecimal balance;
+    BigDecimal balance;
 
-	@JsonProperty("total_spent")
-	BigDecimal totalSpent;
+    @JsonProperty("total_spent")
+    BigDecimal totalSpent;
 
-	@JsonProperty("total_earned")
-	BigDecimal totalEarned;
+    @JsonProperty("total_earned")
+    BigDecimal totalEarned;
 
-	@JsonProperty("total_refunded")
-	BigDecimal totalRefunded;
+    @JsonProperty("total_refunded")
+    BigDecimal totalRefunded;
 
-	String currency;
-	String status;
+    String currency;
+    String status;
 
-	@JsonProperty("locked_balance")
-	BigDecimal lockedBalance;
+    @JsonProperty("locked_balance")
+    BigDecimal lockedBalance;
 
-	@JsonProperty("created_at")
-	LocalDateTime createdAt;
+    @JsonProperty("created_at")
+    LocalDateTime createdAt;
 
-	@JsonProperty("updated_at")
-	LocalDateTime updatedAt;
+    @JsonProperty("updated_at")
+    LocalDateTime updatedAt;
 }

@@ -14,27 +14,27 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UsageLogResponse {
-	Long id;
+    Long id;
 
-	@JsonProperty("user_id")
-	Integer userId;
+    @JsonProperty("user_id")
+    Integer userId;
 
-	@JsonProperty("wallet_transaction_id")
-	Long walletTransactionId;
+    @JsonProperty("wallet_transaction_id")
+    Long walletTransactionId;
 
-	@JsonProperty("service_type")
-	String serviceType;
+    @JsonProperty("service_type")
+    String serviceType;
 
-	String action;
+    String action;
 
-	@JsonProperty("resource_id")
-	String resourceId;
+    @JsonProperty("resource_id")
+    String resourceId;
 
-	@JsonProperty("credits_used")
-	Integer creditsUsed;
+    @JsonProperty("credits_used")
+    Integer creditsUsed;
 
-	String metadata;
+    String metadata;
 
-	@JsonProperty("created_at")
-	LocalDateTime createdAt;
+    @JsonProperty("created_at")
+    LocalDateTime createdAt;
 }
