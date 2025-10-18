@@ -10,7 +10,7 @@ import com.wallet_svc.wallet.entity.CreditPackage;
 
 @Repository
 public interface CreditPackageRepository extends JpaRepository<CreditPackage, Long> {
-	Optional<CreditPackage> findByCode(String code);
+    Optional<CreditPackage> findByCode(String code);
 
-	List<CreditPackage> findByIsActiveTrueOrderByDisplayOrder();
+    List<CreditPackage> findByIsActiveTrueOrderByDisplayOrder();
 }

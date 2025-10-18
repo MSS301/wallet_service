@@ -11,7 +11,7 @@ import com.wallet_svc.wallet.entity.DailyWalletStats;
 
 @Repository
 public interface DailyWalletStatsRepository extends JpaRepository<DailyWalletStats, Long> {
-	Optional<DailyWalletStats> findByDate(LocalDate date);
+    Optional<DailyWalletStats> findByDate(LocalDate date);
 
-	List<DailyWalletStats> findByDateBetweenOrderByDateDesc(LocalDate from, LocalDate to);
+    List<DailyWalletStats> findByDateBetweenOrderByDateDesc(LocalDate from, LocalDate to);
 }

@@ -9,7 +9,7 @@ import com.wallet_svc.wallet.entity.Wallet;
 
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
-	Optional<Wallet> findByUserId(Integer userId);
+    Optional<Wallet> findByUserId(String userId);
 
-	boolean existsByUserId(Integer userId);
+    boolean existsByUserId(String userId);
 }

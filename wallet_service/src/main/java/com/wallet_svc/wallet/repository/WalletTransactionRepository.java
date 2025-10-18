@@ -11,12 +11,11 @@ import com.wallet_svc.wallet.entity.WalletTransaction;
 
 @Repository
 public interface WalletTransactionRepository extends JpaRepository<WalletTransaction, Long> {
-	Page<WalletTransaction> findByWalletIdOrderByCreatedAtDesc(Long walletId, Pageable pageable);
+    Page<WalletTransaction> findByWalletIdOrderByCreatedAtDesc(Long walletId, Pageable pageable);
 
-	List<WalletTransaction> findByWalletIdAndTransactionTypeOrderByCreatedAtDesc(
-			Long walletId, String transactionType);
+    List<WalletTransaction> findByWalletIdAndTransactionTypeOrderByCreatedAtDesc(Long walletId, String transactionType);
 
-	List<WalletTransaction> findByReferenceTypeAndReferenceId(String referenceType, String referenceId);
+    List<WalletTransaction> findByReferenceTypeAndReferenceId(String referenceType, String referenceId);
 
-	Page<WalletTransaction> findByStatusOrderByCreatedAtDesc(String status, Pageable pageable);
+    Page<WalletTransaction> findByStatusOrderByCreatedAtDesc(String status, Pageable pageable);
 }

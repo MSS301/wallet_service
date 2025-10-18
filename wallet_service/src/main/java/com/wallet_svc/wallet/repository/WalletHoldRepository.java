@@ -9,7 +9,7 @@ import com.wallet_svc.wallet.entity.WalletHold;
 
 @Repository
 public interface WalletHoldRepository extends JpaRepository<WalletHold, Long> {
-	List<WalletHold> findByWalletIdAndStatus(Long walletId, String status);
+    List<WalletHold> findByWalletIdAndStatus(Long walletId, String status);
 
-	List<WalletHold> findByReferenceTypeAndReferenceId(String referenceType, String referenceId);
+    List<WalletHold> findByReferenceTypeAndReferenceId(String referenceType, String referenceId);
 }
