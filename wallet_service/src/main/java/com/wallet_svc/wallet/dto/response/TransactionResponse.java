@@ -15,45 +15,45 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TransactionResponse {
-	Long id;
+    Long id;
 
-	@JsonProperty("wallet_id")
-	Long walletId;
+    @JsonProperty("wallet_id")
+    Long walletId;
 
-	@JsonProperty("transaction_type")
-	String transactionType;
+    @JsonProperty("transaction_type")
+    String transactionType;
 
-	BigDecimal amount;
+    BigDecimal amount;
 
-	@JsonProperty("reference_type")
-	String referenceType;
+    @JsonProperty("reference_type")
+    String referenceType;
 
-	@JsonProperty("reference_id")
-	String referenceId;
+    @JsonProperty("reference_id")
+    String referenceId;
 
-	String description;
-	String status;
+    String description;
+    String status;
 
-	@JsonProperty("balance_before")
-	BigDecimal balanceBefore;
+    @JsonProperty("balance_before")
+    BigDecimal balanceBefore;
 
-	@JsonProperty("balance_after")
-	BigDecimal balanceAfter;
+    @JsonProperty("balance_after")
+    BigDecimal balanceAfter;
 
-	String metadata;
+    String metadata;
 
-	@JsonProperty("related_transaction_id")
-	Long relatedTransactionId;
+    @JsonProperty("related_transaction_id")
+    Long relatedTransactionId;
 
-	@JsonProperty("processed_by")
-	Integer processedBy;
+    @JsonProperty("processed_by")
+    Integer processedBy;
 
-	@JsonProperty("processed_at")
-	LocalDateTime processedAt;
+    @JsonProperty("processed_at")
+    LocalDateTime processedAt;
 
-	@JsonProperty("created_at")
-	LocalDateTime createdAt;
+    @JsonProperty("created_at")
+    LocalDateTime createdAt;
 
-	@JsonProperty("updated_at")
-	LocalDateTime updatedAt;
+    @JsonProperty("updated_at")
+    LocalDateTime updatedAt;
 }
