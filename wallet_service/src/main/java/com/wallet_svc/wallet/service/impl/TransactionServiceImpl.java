@@ -24,32 +24,33 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class TransactionServiceImpl implements TransactionService {
-	WalletRepository walletRepository;
-	WalletTransactionRepository transactionRepository;
-	WalletMapper walletMapper;
+    WalletRepository walletRepository;
+    WalletTransactionRepository transactionRepository;
+    WalletMapper walletMapper;
 
-	@Override
-	public Page<TransactionResponse> getMyTransactions(Integer userId, Pageable pageable) {
-		Wallet wallet =
-				walletRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.WALLET_NOT_FOUND));
+    @Override
+    public Page<TransactionResponse> getMyTransactions(String userId, Pageable pageable) {
+        Wallet wallet =
+                walletRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.WALLET_NOT_FOUND));
 
-		Page<WalletTransaction> transactions = transactionRepository.findByWalletIdOrderByCreatedAtDesc(wallet.getId(), pageable);
+        Page<WalletTransaction> transactions =
+                transactionRepository.findByWalletIdOrderByCreatedAtDesc(wallet.getId(), pageable);
 
-		return transactions.map(walletMapper::toTransactionResponse);
-	}
+        return transactions.map(walletMapper::toTransactionResponse);
+    }
 
-	@Override
-	public TransactionResponse getTransactionById(Long transactionId) {
-		WalletTransaction transaction = transactionRepository
-				.findById(transactionId)
-				.orElseThrow(() -> new AppException(ErrorCode.TRANSACTION_NOT_FOUND));
+    @Override
+    public TransactionResponse getTransactionById(Long transactionId) {
+        WalletTransaction transaction = transactionRepository
+                .findById(transactionId)
+                .orElseThrow(() -> new AppException(ErrorCode.TRANSACTION_NOT_FOUND));
 
-		return walletMapper.toTransactionResponse(transaction);
-	}
+        return walletMapper.toTransactionResponse(transaction);
+    }
 
-	@Override
-	public Page<TransactionResponse> getAllTransactions(Pageable pageable) {
-		Page<WalletTransaction> transactions = transactionRepository.findAll(pageable);
-		return transactions.map(walletMapper::toTransactionResponse);
-	}
+    @Override
+    public Page<TransactionResponse> getAllTransactions(Pageable pageable) {
+        Page<WalletTransaction> transactions = transactionRepository.findAll(pageable);
+        return transactions.map(walletMapper::toTransactionResponse);
+    }
 }
