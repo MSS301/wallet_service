@@ -14,45 +14,45 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(value = Exception.class)
-	ResponseEntity<ApiResponse<String>> handlingRuntimeException(Exception exception) {
-		log.error("Exception: ", exception);
-		ApiResponse<String> apiResponse = new ApiResponse<>();
+    @ExceptionHandler(value = Exception.class)
+    ResponseEntity<ApiResponse<String>> handlingRuntimeException(Exception exception) {
+        log.error("Exception: ", exception);
+        ApiResponse<String> apiResponse = new ApiResponse<>();
 
-		apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
-		apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
+        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
 
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
-	}
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+    }
 
-	@ExceptionHandler(value = AppException.class)
-	ResponseEntity<ApiResponse<String>> handlingAppException(AppException exception) {
-		ErrorCode errorCode = exception.getErrorCode();
-		ApiResponse<String> apiResponse = new ApiResponse<>();
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiResponse<String>> handlingAppException(AppException exception) {
+        ErrorCode errorCode = exception.getErrorCode();
+        ApiResponse<String> apiResponse = new ApiResponse<>();
 
-		apiResponse.setCode(errorCode.getCode());
-		apiResponse.setMessage(errorCode.getMessage());
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
-	}
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+    }
 
-	@ExceptionHandler(value = MethodArgumentNotValidException.class)
-	ResponseEntity<ApiResponse<String>> handlingValidation(MethodArgumentNotValidException exception) {
-		String enumKey = exception.getFieldError().getDefaultMessage();
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    ResponseEntity<ApiResponse<String>> handlingValidation(MethodArgumentNotValidException exception) {
+        String enumKey = exception.getFieldError().getDefaultMessage();
 
-		ErrorCode errorCode = ErrorCode.INVALID_KEY;
+        ErrorCode errorCode = ErrorCode.INVALID_KEY;
 
-		try {
-			errorCode = ErrorCode.valueOf(enumKey);
-		} catch (IllegalArgumentException e) {
-			log.error("Invalid error code: {}", enumKey);
-		}
+        try {
+            errorCode = ErrorCode.valueOf(enumKey);
+        } catch (IllegalArgumentException e) {
+            log.error("Invalid error code: {}", enumKey);
+        }
 
-		ApiResponse<String> apiResponse = new ApiResponse<>();
+        ApiResponse<String> apiResponse = new ApiResponse<>();
 
-		apiResponse.setCode(errorCode.getCode());
-		apiResponse.setMessage(errorCode.getMessage());
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
-	}
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+    }
 }
