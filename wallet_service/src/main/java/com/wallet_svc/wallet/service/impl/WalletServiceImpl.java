@@ -66,6 +66,10 @@ public class WalletServiceImpl implements WalletService {
         // Publish wallet created event
         walletEventProducer.publishWalletCreatedEvent(wallet.getId(), userId);
 
+        // Publish balance updated event (initial balance)
+        walletEventProducer.publishBalanceUpdatedEvent(
+                userId, wallet.getId(), BigDecimal.ZERO, wallet.getBalance(), "WALLET_CREATED");
+
         return walletMapper.toWalletResponse(wallet);
     }
 
@@ -145,6 +149,25 @@ public class WalletServiceImpl implements WalletService {
 
         transaction = transactionRepository.save(transaction);
         log.info("Held {} credits for user: {}", request.getAmount(), request.getUserId());
+
+        // Publish events
+        walletEventProducer.publishCreditsHeldEvent(
+                request.getUserId(),
+                wallet.getId(),
+                request.getAmount(),
+                request.getReferenceId(),
+                request.getReferenceType(),
+                hold.getId(),
+                expiresAt);
+
+        walletEventProducer.publishTransactionCreatedEvent(
+                transaction.getId(),
+                request.getUserId(),
+                wallet.getId(),
+                TransactionType.HOLD.toLowerCase(),
+                request.getAmount(),
+                request.getReferenceType(),
+                request.getReferenceId());
 
         return walletMapper.toTransactionResponse(transaction);
     }
@@ -258,6 +281,32 @@ public class WalletServiceImpl implements WalletService {
         transaction = transactionRepository.save(transaction);
         log.info("Charged {} credits from user: {}", request.getAmount(), request.getUserId());
 
+        // Publish events
+        walletEventProducer.publishCreditsChargedEvent(
+                request.getUserId(),
+                wallet.getId(),
+                request.getAmount(),
+                request.getReferenceId(),
+                request.getReferenceType(),
+                wallet.getBalance(),
+                request.getHoldId());
+
+        walletEventProducer.publishBalanceUpdatedEvent(
+                request.getUserId(),
+                wallet.getId(),
+                balanceBefore,
+                wallet.getBalance(),
+                TransactionType.CHARGE.toLowerCase());
+
+        walletEventProducer.publishTransactionCreatedEvent(
+                transaction.getId(),
+                request.getUserId(),
+                wallet.getId(),
+                TransactionType.CHARGE.toLowerCase(),
+                request.getAmount(),
+                request.getReferenceType(),
+                request.getReferenceId());
+
         return walletMapper.toTransactionResponse(transaction);
     }
 
@@ -294,6 +343,32 @@ public class WalletServiceImpl implements WalletService {
         transaction = transactionRepository.save(transaction);
         log.info("Refunded {} credits to user: {}", request.getAmount(), request.getUserId());
 
+        // Publish events
+        walletEventProducer.publishCreditsRefundedEvent(
+                request.getUserId(),
+                wallet.getId(),
+                request.getAmount(),
+                request.getReferenceId(),
+                request.getReferenceType(),
+                request.getDescription(),
+                request.getOriginalTransactionId());
+
+        walletEventProducer.publishBalanceUpdatedEvent(
+                request.getUserId(),
+                wallet.getId(),
+                balanceBefore,
+                wallet.getBalance(),
+                TransactionType.REFUND.toLowerCase());
+
+        walletEventProducer.publishTransactionCreatedEvent(
+                transaction.getId(),
+                request.getUserId(),
+                wallet.getId(),
+                TransactionType.REFUND.toLowerCase(),
+                request.getAmount(),
+                request.getReferenceType(),
+                request.getReferenceId());
+
         return walletMapper.toTransactionResponse(transaction);
     }
 
@@ -328,6 +403,23 @@ public class WalletServiceImpl implements WalletService {
 
         transaction = transactionRepository.save(transaction);
         log.info("Topped up {} credits to user: {}", request.getAmount(), request.getUserId());
+
+        // Publish events
+        walletEventProducer.publishBalanceUpdatedEvent(
+                request.getUserId(),
+                wallet.getId(),
+                balanceBefore,
+                wallet.getBalance(),
+                TransactionType.TOP_UP.toLowerCase());
+
+        walletEventProducer.publishTransactionCreatedEvent(
+                transaction.getId(),
+                request.getUserId(),
+                wallet.getId(),
+                TransactionType.TOP_UP.toLowerCase(),
+                request.getAmount(),
+                request.getReferenceType(),
+                request.getReferenceId());
 
         return walletMapper.toTransactionResponse(transaction);
     }
