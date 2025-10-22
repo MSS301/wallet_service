@@ -16,11 +16,11 @@ import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wallet_svc.wallet.event.payload.UserRegisteredEvent;
 
 /**
  * Kafka Consumer configuration with error handling and custom ObjectMapper
  * to properly deserialize LocalDateTime from ISO-8601 strings
+ * Uses Object type to support multiple event types
  */
 @EnableKafka
 @Configuration
@@ -39,31 +39,29 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, UserRegisteredEvent> consumerFactory() {
+    public ConsumerFactory<String, Object> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
 
-        // Create JsonDeserializer with custom ObjectMapper for UserRegisteredEvent
-        JsonDeserializer<UserRegisteredEvent> jsonDeserializer =
-                new JsonDeserializer<>(UserRegisteredEvent.class, objectMapper);
+        // Create JsonDeserializer with custom ObjectMapper supporting all event types
+        JsonDeserializer<Object> jsonDeserializer = new JsonDeserializer<>(Object.class, objectMapper);
         jsonDeserializer.addTrustedPackages("*");
         jsonDeserializer.setUseTypeHeaders(false);
         jsonDeserializer.setRemoveTypeHeaders(false);
 
         // Wrap with ErrorHandlingDeserializer
-        ErrorHandlingDeserializer<UserRegisteredEvent> errorHandlingDeserializer =
-                new ErrorHandlingDeserializer<>(jsonDeserializer);
+        ErrorHandlingDeserializer<Object> errorHandlingDeserializer = new ErrorHandlingDeserializer<>(jsonDeserializer);
 
         return new DefaultKafkaConsumerFactory<>(
                 props, new ErrorHandlingDeserializer<>(new StringDeserializer()), errorHandlingDeserializer);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, UserRegisteredEvent> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, UserRegisteredEvent> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
