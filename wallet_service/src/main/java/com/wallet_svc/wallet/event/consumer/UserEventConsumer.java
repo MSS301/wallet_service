@@ -24,10 +24,10 @@ public class UserEventConsumer {
             topics = "user.registered",
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
-    public void handleUserRegistered(Object eventObject) {
+    public void handleUserRegistered(String eventJson) {
         try {
-            // Convert the Object to UserRegisteredEvent
-            UserRegisteredEvent event = objectMapper.convertValue(eventObject, UserRegisteredEvent.class);
+            // Deserialize JSON string to UserRegisteredEvent
+            UserRegisteredEvent event = objectMapper.readValue(eventJson, UserRegisteredEvent.class);
 
             log.info("Received user.registered event for user: {}", event.getUserId());
             log.debug(

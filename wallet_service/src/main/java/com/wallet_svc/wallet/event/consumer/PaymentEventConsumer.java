@@ -26,9 +26,10 @@ public class PaymentEventConsumer {
             topics = "payment.completed",
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
-    public void handlePaymentCompleted(Object eventObject) {
+    public void handlePaymentCompleted(String eventJson) {
         try {
-            PaymentCompletedEvent event = objectMapper.convertValue(eventObject, PaymentCompletedEvent.class);
+            // Deserialize JSON string to PaymentCompletedEvent
+            PaymentCompletedEvent event = objectMapper.readValue(eventJson, PaymentCompletedEvent.class);
 
             log.info(
                     "Received payment.completed event for user: {} - amount: {}", event.getUserId(), event.getAmount());
@@ -54,9 +55,10 @@ public class PaymentEventConsumer {
             topics = "payment.bonus_granted",
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
-    public void handleBonusGranted(Object eventObject) {
+    public void handleBonusGranted(String eventJson) {
         try {
-            BonusGrantedEvent event = objectMapper.convertValue(eventObject, BonusGrantedEvent.class);
+            // Deserialize JSON string to BonusGrantedEvent
+            BonusGrantedEvent event = objectMapper.readValue(eventJson, BonusGrantedEvent.class);
 
             log.info(
                     "Received payment.bonus_granted event for user: {} - amount: {}",

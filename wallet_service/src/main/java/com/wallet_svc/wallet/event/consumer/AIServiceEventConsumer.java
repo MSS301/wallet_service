@@ -29,10 +29,11 @@ public class AIServiceEventConsumer {
             topics = "slide.generation_requested",
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
-    public void handleSlideGenerationRequested(Object eventObject) {
+    public void handleSlideGenerationRequested(String eventJson) {
         try {
+            // Deserialize JSON string to SlideGenerationRequestedEvent
             SlideGenerationRequestedEvent event =
-                    objectMapper.convertValue(eventObject, SlideGenerationRequestedEvent.class);
+                    objectMapper.readValue(eventJson, SlideGenerationRequestedEvent.class);
 
             log.info(
                     "Received slide.generation_requested event for user: {} - credits: {}",
@@ -64,13 +65,16 @@ public class AIServiceEventConsumer {
             topics = "slide.generation_completed",
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
-    public void handleSlideGenerationCompleted(SlideGenerationCompletedEvent event) {
-        log.info(
-                "Received slide.generation_completed event for user: {} - credits: {}",
-                event.getUserId(),
-                event.getCreditsUsed());
-
+    public void handleSlideGenerationCompleted(String eventJson) {
         try {
+            // Deserialize JSON string to SlideGenerationCompletedEvent
+            SlideGenerationCompletedEvent event = objectMapper.readValue(eventJson, SlideGenerationCompletedEvent.class);
+            
+            log.info(
+                    "Received slide.generation_completed event for user: {} - credits: {}",
+                    event.getUserId(),
+                    event.getCreditsUsed());
+
             ChargeRequest request = ChargeRequest.builder()
                     .userId(event.getUserId())
                     .amount(event.getCreditsUsed())
@@ -88,7 +92,7 @@ public class AIServiceEventConsumer {
                     event.getCreditsUsed(),
                     event.getSlideId());
         } catch (Exception e) {
-            log.error("Failed to charge credits for user: {} - slide: {}", event.getUserId(), event.getSlideId(), e);
+            log.error("Failed to charge credits for completed slide generation", e);
             // In production, implement retry logic or dead letter queue
         }
     }
@@ -97,11 +101,14 @@ public class AIServiceEventConsumer {
             topics = "slide.generation_failed",
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
-    public void handleSlideGenerationFailed(SlideGenerationFailedEvent event) {
-        log.info(
-                "Received slide.generation_failed event for user: {} - hold: {}", event.getUserId(), event.getHoldId());
-
+    public void handleSlideGenerationFailed(String eventJson) {
         try {
+            // Deserialize JSON string to SlideGenerationFailedEvent
+            SlideGenerationFailedEvent event = objectMapper.readValue(eventJson, SlideGenerationFailedEvent.class);
+            
+            log.info(
+                    "Received slide.generation_failed event for user: {} - hold: {}", event.getUserId(), event.getHoldId());
+
             ReleaseHoldRequest request =
                     ReleaseHoldRequest.builder().holdId(event.getHoldId()).build();
 
