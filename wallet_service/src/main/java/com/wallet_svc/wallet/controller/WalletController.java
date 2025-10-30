@@ -27,22 +27,17 @@ public class WalletController {
     TransactionService transactionService;
     CreditPackageService creditPackageService;
 
-    // TODO: Get userId from SecurityContext in real implementation
-    private String getCurrentUserId() {
-        return ""; // Mock for now
-    }
-
     @GetMapping("/my")
-    ApiResponse<WalletResponse> getMyWallet() {
-        String userId = getCurrentUserId();
+    ApiResponse<WalletResponse> getMyWallet(@RequestHeader("X-User-Id") String userId) {
+        log.info("Get wallet for user: {}", userId);
         return ApiResponse.<WalletResponse>builder()
                 .result(walletService.getWalletByUserId(userId))
                 .build();
     }
 
     @GetMapping("/my/balance")
-    ApiResponse<BalanceResponse> getMyBalance() {
-        String userId = getCurrentUserId();
+    ApiResponse<BalanceResponse> getMyBalance(@RequestHeader("X-User-Id") String userId) {
+        log.info("Get balance for user: {}", userId);
         return ApiResponse.<BalanceResponse>builder()
                 .result(walletService.getBalance(userId))
                 .build();
@@ -50,8 +45,9 @@ public class WalletController {
 
     @GetMapping("/my/transactions")
     ApiResponse<Page<TransactionResponse>> getMyTransactions(
+            @RequestHeader("X-User-Id") String userId,
             @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int limit) {
-        String userId = getCurrentUserId();
+        log.info("Get transactions for user: {}, page: {}, limit: {}", userId, page, limit);
         Pageable pageable = PageRequest.of(page - 1, limit);
         return ApiResponse.<Page<TransactionResponse>>builder()
                 .result(transactionService.getMyTransactions(userId, pageable))
@@ -59,7 +55,10 @@ public class WalletController {
     }
 
     @GetMapping("/my/transactions/{id}")
-    ApiResponse<TransactionResponse> getTransactionById(@PathVariable("id") Long id) {
+    ApiResponse<TransactionResponse> getTransactionById(
+            @RequestHeader("X-User-Id") String userId,
+            @PathVariable("id") Long id) {
+        log.info("Get transaction {} for user: {}", id, userId);
         return ApiResponse.<TransactionResponse>builder()
                 .result(transactionService.getTransactionById(id))
                 .build();
