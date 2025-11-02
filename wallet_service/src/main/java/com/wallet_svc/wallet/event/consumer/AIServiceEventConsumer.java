@@ -68,8 +68,9 @@ public class AIServiceEventConsumer {
     public void handleSlideGenerationCompleted(String eventJson) {
         try {
             // Deserialize JSON string to SlideGenerationCompletedEvent
-            SlideGenerationCompletedEvent event = objectMapper.readValue(eventJson, SlideGenerationCompletedEvent.class);
-            
+            SlideGenerationCompletedEvent event =
+                    objectMapper.readValue(eventJson, SlideGenerationCompletedEvent.class);
+
             log.info(
                     "Received slide.generation_completed event for user: {} - credits: {}",
                     event.getUserId(),
@@ -105,9 +106,11 @@ public class AIServiceEventConsumer {
         try {
             // Deserialize JSON string to SlideGenerationFailedEvent
             SlideGenerationFailedEvent event = objectMapper.readValue(eventJson, SlideGenerationFailedEvent.class);
-            
+
             log.info(
-                    "Received slide.generation_failed event for user: {} - hold: {}", event.getUserId(), event.getHoldId());
+                    "Received slide.generation_failed event for user: {} - hold: {}",
+                    event.getUserId(),
+                    event.getHoldId());
 
             ReleaseHoldRequest request =
                     ReleaseHoldRequest.builder().holdId(event.getHoldId()).build();

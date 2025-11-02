@@ -46,10 +46,7 @@ public class KafkaConsumerConfig {
 
         // Use StringDeserializer for both key and value
         // Manual deserialization in consumers using ObjectMapper
-        return new DefaultKafkaConsumerFactory<>(
-                props, 
-                new StringDeserializer(), 
-                new StringDeserializer());
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new StringDeserializer());
     }
 
     @Bean

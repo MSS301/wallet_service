@@ -11,16 +11,32 @@ services:
       - SPRING_DATASOURCE_PASSWORD=npg_Zwq1fJP7ltoD
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8888/eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/wallet/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
     networks:
       - microservices-network
 
   kafka:
     image: confluentinc/cp-kafka:latest
     ports:
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
       - "9094:9094"
-    environment:
+      zookeeper:
+        condition: service_healthy
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9094
@@ -31,6 +47,12 @@ services:
       - zookeeper
     networks:
       - microservices-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest

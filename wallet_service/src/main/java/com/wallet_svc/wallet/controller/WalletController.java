@@ -46,7 +46,8 @@ public class WalletController {
     @GetMapping("/my/transactions")
     ApiResponse<Page<TransactionResponse>> getMyTransactions(
             @RequestHeader("X-User-Id") String userId,
-            @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "20") int limit) {
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int limit) {
         log.info("Get transactions for user: {}, page: {}, limit: {}", userId, page, limit);
         Pageable pageable = PageRequest.of(page - 1, limit);
         return ApiResponse.<Page<TransactionResponse>>builder()
@@ -56,8 +57,7 @@ public class WalletController {
 
     @GetMapping("/my/transactions/{id}")
     ApiResponse<TransactionResponse> getTransactionById(
-            @RequestHeader("X-User-Id") String userId,
-            @PathVariable("id") Long id) {
+            @RequestHeader("X-User-Id") String userId, @PathVariable("id") Long id) {
         log.info("Get transaction {} for user: {}", id, userId);
         return ApiResponse.<TransactionResponse>builder()
                 .result(transactionService.getTransactionById(id))
