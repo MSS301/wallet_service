@@ -1,5 +1,6 @@
 package com.wallet_svc.wallet.event.consumer;
 
+
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,9 @@ public class UserEventConsumer {
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
     public void handleUserRegistered(String eventJson) {
+        log.info("=== RECEIVED MESSAGE FROM user.registered TOPIC ===");
+        log.info("Raw JSON: {}", eventJson);
+
         try {
             // Deserialize JSON string to UserRegisteredEvent
             UserRegisteredEvent event = objectMapper.readValue(eventJson, UserRegisteredEvent.class);
