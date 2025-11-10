@@ -1,13 +1,14 @@
 package com.wallet_svc.wallet.repository;
 
-import com.wallet_svc.wallet.entity.ProcessedEvent;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import com.wallet_svc.wallet.entity.ProcessedEvent;
 
 @Repository
 public interface ProcessedEventRepository extends JpaRepository<ProcessedEvent, Long> {
@@ -31,9 +32,7 @@ public interface ProcessedEventRepository extends JpaRepository<ProcessedEvent, 
     /**
      * Find recent processing failures for monitoring
      */
-    @Query("SELECT e FROM ProcessedEvent e WHERE " +
-           "e.processingResult = 'FAILED' AND e.processedAt > :since " +
-           "ORDER BY e.processedAt DESC")
+    @Query("SELECT e FROM ProcessedEvent e WHERE " + "e.processingResult = 'FAILED' AND e.processedAt > :since "
+            + "ORDER BY e.processedAt DESC")
     List<ProcessedEvent> findRecentFailures(LocalDateTime since);
 }
-

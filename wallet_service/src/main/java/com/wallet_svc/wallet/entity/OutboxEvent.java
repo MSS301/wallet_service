@@ -1,10 +1,11 @@
 package com.wallet_svc.wallet.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 /**
  * Outbox Pattern Implementation for Wallet Service
@@ -17,10 +18,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "outbox_events", indexes = {
-    @Index(name = "idx_outbox_status_created", columnList = "status,created_at"),
-    @Index(name = "idx_outbox_event_type", columnList = "event_type")
-})
+@Table(
+        name = "outbox_events",
+        indexes = {
+            @Index(name = "idx_outbox_status_created", columnList = "status,created_at"),
+            @Index(name = "idx_outbox_event_type", columnList = "event_type")
+        })
 public class OutboxEvent {
 
     @Id
@@ -81,4 +84,3 @@ public class OutboxEvent {
         return this.retryCount < this.maxRetry;
     }
 }
-

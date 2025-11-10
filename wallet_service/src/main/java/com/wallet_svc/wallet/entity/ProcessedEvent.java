@@ -1,10 +1,11 @@
 package com.wallet_svc.wallet.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 /**
  * Idempotency Key tracking for event processing
@@ -18,10 +19,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "processed_events", indexes = {
-    @Index(name = "idx_event_id_type", columnList = "event_id,event_type", unique = true),
-    @Index(name = "idx_processed_at", columnList = "processed_at")
-})
+@Table(
+        name = "processed_events",
+        indexes = {
+            @Index(name = "idx_event_id_type", columnList = "event_id,event_type", unique = true),
+            @Index(name = "idx_processed_at", columnList = "processed_at")
+        })
 public class ProcessedEvent {
 
     @Id
@@ -57,4 +60,3 @@ public class ProcessedEvent {
         }
     }
 }
-

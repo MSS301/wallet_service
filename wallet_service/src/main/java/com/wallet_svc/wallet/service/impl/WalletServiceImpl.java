@@ -382,8 +382,10 @@ public class WalletServiceImpl implements WalletService {
         validateWalletStatus(wallet);
 
         BigDecimal balanceBefore = wallet.getBalance();
+        Integer tokensBefore = wallet.getToken();
         wallet.setBalance(wallet.getBalance().add(request.getAmount()));
         wallet.setTotalEarned(wallet.getTotalEarned().add(request.getAmount()));
+        wallet.setToken(tokensBefore + request.getTokens());
         walletRepository.save(wallet);
 
         // Create transaction
@@ -397,6 +399,8 @@ public class WalletServiceImpl implements WalletService {
                 .status(TransactionStatus.SUCCESS)
                 .balanceBefore(balanceBefore)
                 .balanceAfter(wallet.getBalance())
+                .tokenBefore(tokensBefore)
+                .tokenAfter(wallet.getToken())
                 .metadata(request.getMetadata())
                 .processedAt(LocalDateTime.now())
                 .build();

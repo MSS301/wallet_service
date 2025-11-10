@@ -1,18 +1,20 @@
 package com.wallet_svc.wallet.service;
 
-import com.wallet_svc.wallet.entity.ProcessedEvent;
-import com.wallet_svc.wallet.repository.ProcessedEventRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.time.LocalDateTime;
-import java.util.List;
+import com.wallet_svc.wallet.entity.ProcessedEvent;
+import com.wallet_svc.wallet.repository.ProcessedEventRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Idempotent Event Processing Service
@@ -52,8 +54,8 @@ public class IdempotentEventService {
      * Use REQUIRES_NEW to ensure this commits even if parent transaction fails
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void markEventAsProcessed(String eventId, String eventType, String sourceService,
-                                     String payload, String result, String details) {
+    public void markEventAsProcessed(
+            String eventId, String eventType, String sourceService, String payload, String result, String details) {
         try {
             String payloadHash = generateHash(payload);
 
@@ -87,8 +89,8 @@ public class IdempotentEventService {
      * Convenience method for failed processing
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void markEventAsFailed(String eventId, String eventType, String sourceService,
-                                  String payload, String errorMessage) {
+    public void markEventAsFailed(
+            String eventId, String eventType, String sourceService, String payload, String errorMessage) {
         markEventAsProcessed(eventId, eventType, sourceService, payload, "FAILED", errorMessage);
     }
 
@@ -141,4 +143,3 @@ public class IdempotentEventService {
         return processedEventRepository.findRecentFailures(since);
     }
 }
-

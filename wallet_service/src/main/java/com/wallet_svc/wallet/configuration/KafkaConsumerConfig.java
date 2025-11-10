@@ -1,5 +1,8 @@
 package com.wallet_svc.wallet.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,9 +18,6 @@ import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.util.backoff.FixedBackOff;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Kafka Consumer Configuration with Production Best Practices
@@ -85,19 +85,16 @@ public class KafkaConsumerConfig {
     @Bean
     public DefaultErrorHandler errorHandler(KafkaTemplate<String, Object> kafkaTemplate) {
         // Dead Letter Queue recoverer
-        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(kafkaTemplate,
-            (record, ex) -> {
-                // Send to topic with .DLT suffix (Dead Letter Topic)
-                String dlqTopic = record.topic() + ".DLT";
-                return new org.apache.kafka.common.TopicPartition(dlqTopic, record.partition());
-            }
-        );
+        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(kafkaTemplate, (record, ex) -> {
+            // Send to topic with .DLT suffix (Dead Letter Topic)
+            String dlqTopic = record.topic() + ".DLT";
+            return new org.apache.kafka.common.TopicPartition(dlqTopic, record.partition());
+        });
 
         // Retry 3 times with 2 second intervals
         DefaultErrorHandler errorHandler = new DefaultErrorHandler(
-            recoverer,
-            new FixedBackOff(2000L, 3L) // 2 seconds interval, 3 retries
-        );
+                recoverer, new FixedBackOff(2000L, 3L) // 2 seconds interval, 3 retries
+                );
 
         // Don't retry on specific exceptions (e.g., validation errors)
         // errorHandler.addNotRetryableExceptions(ValidationException.class);
@@ -111,11 +108,10 @@ public class KafkaConsumerConfig {
      */
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
-            ConsumerFactory<String, Object> consumerFactory,
-            DefaultErrorHandler errorHandler) {
+            ConsumerFactory<String, Object> consumerFactory, DefaultErrorHandler errorHandler) {
 
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
-            new ConcurrentKafkaListenerContainerFactory<>();
+                new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(consumerFactory);
         factory.setCommonErrorHandler(errorHandler);
@@ -129,4 +125,3 @@ public class KafkaConsumerConfig {
         return factory;
     }
 }
-

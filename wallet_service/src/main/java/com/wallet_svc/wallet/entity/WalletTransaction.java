@@ -33,6 +33,12 @@ public class WalletTransaction {
     @Column(precision = 15, scale = 2, nullable = false)
     BigDecimal amount;
 
+    @Column(name = "token_before")
+    Integer tokenBefore;
+
+    @Column(name = "token_after")
+    Integer tokenAfter;
+
     @Column(name = "reference_type", length = 50)
     String referenceType; // AI_GENERATION / SUBSCRIPTION / BONUS / PROMOTION / PAYMENT
 

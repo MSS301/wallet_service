@@ -34,4 +34,6 @@ public class TopUpRequest {
     String referenceId; // payment_id
 
     String metadata;
+
+    Integer tokens;
 }

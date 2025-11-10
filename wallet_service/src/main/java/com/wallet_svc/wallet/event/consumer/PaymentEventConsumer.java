@@ -55,18 +55,22 @@ public class PaymentEventConsumer {
                 return; // Skip duplicate event
             }
 
-            log.info("Received payment.completed event for user: {} - amount: {} - paymentId: {}",
-                    event.getUserId(), event.getAmount(), event.getPaymentId());
+            log.info(
+                    "Received payment.completed event for user: {} - amount: {} - paymentId: {}",
+                    event.getUserId(),
+                    event.getAmount(),
+                    event.getPaymentId());
 
             // Process the event
             TopUpRequest request = TopUpRequest.builder()
                     .userId(event.getUserId())
                     .amount(event.getAmount())
                     .referenceType("PAYMENT")
-                    .referenceId(String.valueOf(event.getPaymentId()))  // Convert Long to String
+                    .referenceId(String.valueOf(event.getPaymentId())) // Convert Long to String
                     .description("Payment top-up via " + event.getPaymentMethod())
                     .metadata("{\"currency\":\"" + event.getCurrency() + "\",\"method\":\"" + event.getPaymentMethod()
                             + "\",\"orderId\":\"" + event.getOrderId() + "\"}")
+                    .tokens(event.getCredits())
                     .build();
 
             walletService.topUp(request);
@@ -81,8 +85,8 @@ public class PaymentEventConsumer {
 
             // Mark as failed for monitoring
             if (eventId != null) {
-                idempotentEventService.markEventAsFailed(eventId, "payment.completed",
-                        "payment-service", eventJson, e.getMessage());
+                idempotentEventService.markEventAsFailed(
+                        eventId, "payment.completed", "payment-service", eventJson, e.getMessage());
             }
 
             // In production: Send to Dead Letter Queue for manual review
@@ -112,8 +116,10 @@ public class PaymentEventConsumer {
                 return;
             }
 
-            log.info("Received payment.bonus_granted event for user: {} - amount: {}",
-                    event.getUserId(), event.getAmount());
+            log.info(
+                    "Received payment.bonus_granted event for user: {} - amount: {}",
+                    event.getUserId(),
+                    event.getAmount());
 
             TopUpRequest request = TopUpRequest.builder()
                     .userId(event.getUserId())
@@ -135,8 +141,8 @@ public class PaymentEventConsumer {
             log.error("❌ Failed to add bonus credits", e);
 
             if (eventId != null) {
-                idempotentEventService.markEventAsFailed(eventId, "payment.bonus_granted",
-                        "payment-service", eventJson, e.getMessage());
+                idempotentEventService.markEventAsFailed(
+                        eventId, "payment.bonus_granted", "payment-service", eventJson, e.getMessage());
             }
         }
     }

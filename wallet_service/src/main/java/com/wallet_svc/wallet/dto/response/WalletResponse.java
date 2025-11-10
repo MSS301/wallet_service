@@ -42,4 +42,7 @@ public class WalletResponse {
 
     @JsonProperty("updated_at")
     LocalDateTime updatedAt;
+
+    @JsonProperty("token")
+    Integer token;
 }

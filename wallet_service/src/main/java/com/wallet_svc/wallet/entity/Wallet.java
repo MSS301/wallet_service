@@ -60,6 +60,9 @@ public class Wallet {
     @Builder.Default
     LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Column(name = "token")
+    Integer token;
+
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();

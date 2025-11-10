@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PaymentCompletedEvent {
     @JsonProperty("payment_id")
-    private Long paymentId;  // Changed from String to Long to match payment service
+    private Long paymentId; // Changed from String to Long to match payment service
 
     @JsonProperty("order_id")
-    private Long orderId;  // Added to match payment service event
+    private Long orderId; // Added to match payment service event
 
     @JsonProperty("user_id")
     private String userId;
@@ -35,4 +35,7 @@ public class PaymentCompletedEvent {
 
     @JsonProperty("timestamp")
     private LocalDateTime timestamp;
+
+    @JsonProperty("credits")
+    private Integer credits;
 }
