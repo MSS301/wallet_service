@@ -70,4 +70,12 @@ public class InternalWalletController {
                 .result(walletService.getBalance(userId))
                 .build();
     }
+
+    @PostMapping("/deduct-token")
+    ApiResponse<TokenResponse> deductToken(@RequestBody @Valid DeductTokenRequest request) {
+        log.info("Deduct token request for user: {} - tokens: {}", request.getUserId(), request.getTokens());
+        return ApiResponse.<TokenResponse>builder()
+                .result(walletService.deductToken(request))
+                .build();
+    }
 }

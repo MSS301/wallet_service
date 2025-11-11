@@ -7,4 +7,5 @@ public class TransactionType {
     public static final String ADJUSTMENT = "ADJUSTMENT";
     public static final String HOLD = "HOLD";
     public static final String RELEASE = "RELEASE";
+    public static final String TOKEN_DEDUCTION = "TOKEN_DEDUCTION";
 }

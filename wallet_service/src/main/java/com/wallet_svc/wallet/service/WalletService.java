@@ -23,4 +23,6 @@ public interface WalletService {
     TransactionResponse adjustment(AdjustmentRequest request);
 
     boolean validateBalance(String userId, java.math.BigDecimal amount);
+
+    TokenResponse deductToken(DeductTokenRequest request);
 }

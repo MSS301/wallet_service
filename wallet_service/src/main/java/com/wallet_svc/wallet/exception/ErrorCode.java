@@ -18,7 +18,8 @@ public enum ErrorCode {
     HOLD_EXPIRED(2202, "Hold has expired"),
     HOLD_ALREADY_RELEASED(2203, "Hold has already been released"),
     PACKAGE_NOT_FOUND(2301, "Credit package not found"),
-    INVALID_AMOUNT(2401, "Invalid amount");
+    INVALID_AMOUNT(2401, "Invalid amount"),
+    INSUFFICIENT_TOKEN(2501, "Insufficient token balance");
 
     ErrorCode(int code, String message) {
         this.code = code;

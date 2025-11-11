@@ -487,4 +487,69 @@ public class WalletServiceImpl implements WalletService {
             throw new AppException(ErrorCode.WALLET_CLOSED);
         }
     }
+
+    @Override
+    @Transactional
+    public TokenResponse deductToken(DeductTokenRequest request) {
+        Wallet wallet = walletRepository
+                .findByUserId(request.getUserId())
+                .orElseThrow(() -> new AppException(ErrorCode.WALLET_NOT_FOUND));
+
+        validateWalletStatus(wallet);
+
+        // Get current token balance
+        Integer tokenBefore = wallet.getToken() != null ? wallet.getToken() : 0;
+
+        // Validate sufficient tokens
+        if (tokenBefore < request.getTokens()) {
+            throw new AppException(ErrorCode.INSUFFICIENT_TOKEN);
+        }
+
+        // Deduct tokens
+        Integer tokenAfter = tokenBefore - request.getTokens();
+        wallet.setToken(tokenAfter);
+        walletRepository.save(wallet);
+
+        // Create transaction record
+        WalletTransaction transaction = WalletTransaction.builder()
+                .walletId(wallet.getId())
+                .transactionType(TransactionType.TOKEN_DEDUCTION)
+                .amount(BigDecimal.ZERO) // No balance change, only token change
+                .tokenBefore(tokenBefore)
+                .tokenAfter(tokenAfter)
+                .referenceType(request.getReferenceType())
+                .referenceId(request.getReferenceId())
+                .description(
+                        request.getDescription() != null
+                                ? request.getDescription()
+                                : "Token deducted for AI generation")
+                .status(TransactionStatus.SUCCESS)
+                .balanceBefore(wallet.getBalance())
+                .balanceAfter(wallet.getBalance())
+                .processedAt(LocalDateTime.now())
+                .build();
+
+        transaction = transactionRepository.save(transaction);
+        log.info("Deducted {} tokens from user: {}", request.getTokens(), request.getUserId());
+
+        // Publish event
+        walletEventProducer.publishTokenDeductedEvent(
+                request.getUserId(),
+                wallet.getId(),
+                request.getTokens(),
+                tokenBefore,
+                tokenAfter,
+                request.getReferenceId(),
+                request.getReferenceType());
+
+        return TokenResponse.builder()
+                .userId(request.getUserId())
+                .tokenBefore(tokenBefore)
+                .tokenAfter(tokenAfter)
+                .tokensDeducted(request.getTokens())
+                .transactionId(transaction.getId())
+                .status("SUCCESS")
+                .message("Tokens deducted successfully")
+                .build();
+    }
 }
