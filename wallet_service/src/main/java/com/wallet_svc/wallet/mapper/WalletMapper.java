@@ -10,5 +10,4 @@ public interface WalletMapper {
     WalletResponse toWalletResponse(Wallet wallet);
 
     TransactionResponse toTransactionResponse(WalletTransaction transaction);
-
 }

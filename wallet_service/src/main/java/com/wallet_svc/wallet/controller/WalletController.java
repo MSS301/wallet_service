@@ -1,14 +1,11 @@
 package com.wallet_svc.wallet.controller;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import com.wallet_svc.wallet.dto.response.*;
-import com.wallet_svc.wallet.service.CreditPackageService;
 import com.wallet_svc.wallet.service.TransactionService;
 import com.wallet_svc.wallet.service.WalletService;
 
@@ -25,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 public class WalletController {
     WalletService walletService;
     TransactionService transactionService;
-    CreditPackageService creditPackageService;
 
     @GetMapping("/my")
     ApiResponse<WalletResponse> getMyWallet(@RequestHeader("X-User-Id") String userId) {
@@ -61,20 +57,6 @@ public class WalletController {
         log.info("Get transaction {} for user: {}", id, userId);
         return ApiResponse.<TransactionResponse>builder()
                 .result(transactionService.getTransactionById(id))
-                .build();
-    }
-
-    @GetMapping("/packages")
-    ApiResponse<List<CreditPackageResponse>> getPackages() {
-        return ApiResponse.<List<CreditPackageResponse>>builder()
-                .result(creditPackageService.getAllActivePackages())
-                .build();
-    }
-
-    @GetMapping("/packages/{id}")
-    ApiResponse<CreditPackageResponse> getPackageById(@PathVariable("id") Long id) {
-        return ApiResponse.<CreditPackageResponse>builder()
-                .result(creditPackageService.getPackageById(id))
                 .build();
     }
 }
