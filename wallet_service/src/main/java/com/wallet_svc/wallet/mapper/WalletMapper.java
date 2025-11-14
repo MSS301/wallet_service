@@ -11,7 +11,4 @@ public interface WalletMapper {
 
     TransactionResponse toTransactionResponse(WalletTransaction transaction);
 
-    CreditPackageResponse toCreditPackageResponse(CreditPackage creditPackage);
-
-    UsageLogResponse toUsageLogResponse(CreditUsageLog usageLog);
 }
