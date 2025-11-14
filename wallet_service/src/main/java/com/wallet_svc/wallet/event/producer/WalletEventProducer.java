@@ -201,33 +201,4 @@ public class WalletEventProducer {
                 serviceType,
                 credits);
     }
-
-    // ============ Token Events ============
-
-    public void publishTokenDeductedEvent(
-            String userId,
-            Long walletId,
-            Integer tokensDeducted,
-            Integer tokenBefore,
-            Integer tokenAfter,
-            String referenceId,
-            String referenceType) {
-        TokenDeductedEvent event = TokenDeductedEvent.builder()
-                .userId(userId)
-                .walletId(walletId)
-                .tokensDeducted(tokensDeducted)
-                .tokenBefore(tokenBefore)
-                .tokenAfter(tokenAfter)
-                .referenceId(referenceId)
-                .referenceType(referenceType)
-                .timestamp(LocalDateTime.now())
-                .build();
-
-        kafkaTemplate.send("wallet.token_deducted", event);
-        log.info(
-                "Published wallet.token_deducted event for user: {} - tokens: {}, remaining: {}",
-                userId,
-                tokensDeducted,
-                tokenAfter);
-    }
 }

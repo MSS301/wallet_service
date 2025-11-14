@@ -58,6 +58,7 @@ public class WalletServiceImpl implements WalletService {
                 .balance(new BigDecimal(initialBalance.toString()))
                 .currency(defaultCurrency)
                 .status(WalletStatus.ACTIVE)
+                .token(0)
                 .build();
 
         wallet = walletRepository.save(wallet);
@@ -531,16 +532,6 @@ public class WalletServiceImpl implements WalletService {
 
         transaction = transactionRepository.save(transaction);
         log.info("Deducted {} tokens from user: {}", request.getTokens(), request.getUserId());
-
-        // Publish event
-        walletEventProducer.publishTokenDeductedEvent(
-                request.getUserId(),
-                wallet.getId(),
-                request.getTokens(),
-                tokenBefore,
-                tokenAfter,
-                request.getReferenceId(),
-                request.getReferenceType());
 
         return TokenResponse.builder()
                 .userId(request.getUserId())
